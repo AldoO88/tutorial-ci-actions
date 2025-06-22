@@ -10,17 +10,9 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
         node: [18, 20]
-    services:
-      redis: 
-        image: redis
-        ports: 
-          - 6379:6379
+
 
     steps:
-      - name: Install redis cli
-        run: sudo apt-get update -y && sudo apt-get install redis-tools -y
-      - name: Test redis
-        run: redis-cli -h localhost -p 6379 ping
       - name: Print variable
         run: echo ${{ secrets.TOKEN_SECRET }}
       - name: Checkout
@@ -35,7 +27,6 @@ jobs:
         run: npm run test
       - name: Build page
         run: npm run build
-
       - name: Upload artifact
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.node == 18 }}
         uses: actions/upload-pages-artifact@v3
